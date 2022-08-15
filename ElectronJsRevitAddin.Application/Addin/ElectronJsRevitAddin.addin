@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+	<AddIn Type="Application">
+		<Name>Electron.js Revit Add-in</Name>
+		<Publisher>Ibrahim Saad</Publisher>
+		<Assembly>ElectronJsRevitAddin1.0.0\ElectronJsRevitAddin.Application.dll</Assembly>
+		<FullClassName>ElectronJsRevitAddin.ExternalApplication</FullClassName>
+		<ClientId>E5EE2F81-7537-4213-B46D-394E4B757CFB</ClientId>
+		<VendorId>Ibrahim Saad</VendorId>
+		<VendorDescription>Ibrahim Saad</VendorDescription>
+	</AddIn>
+</RevitAddIns>
