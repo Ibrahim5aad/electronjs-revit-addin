@@ -39,17 +39,7 @@ namespace ElectronJsRevitAddin.Controllers
 			}
 
 		}
-
-		[Endpoint("SetWindowOwner")]
-		public async Task SetWindowOwner(JObject payload)
-		{
-			await Task.Run(() =>
-			{
-				WindowHandler.SetWindowOwner
-				(DocumentManager.Instance.Application,
-				new IntPtr(int.Parse(payload["WindowHandle"].ToString())));
-			});
-		}
+		 
 
 	}
 }

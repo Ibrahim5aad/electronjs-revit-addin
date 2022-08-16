@@ -26,16 +26,7 @@ namespace ElectronJsRevitAddin.Controllers
 		static ControllerBase()
 		{
 		}
-
-
-		/// <summary>
-		/// Finalizes an instance of the <see cref="ControllerBase"/> class.
-		/// </summary>
-		~ControllerBase()
-		{
-			CloseServer();
-		}
-
+		 
 
 		/// <summary>
 		/// Initializes the server.
@@ -55,6 +46,9 @@ namespace ElectronJsRevitAddin.Controllers
 		/// </summary>
 		public static void CloseServer()
 		{
+			if (_server == null)
+				return;
+
 			_server.CloseConnection();
 			_server.OnConnect -= OnServerConnect;
 			_server.OnDisconnect -= OnServerOnDisconnect;

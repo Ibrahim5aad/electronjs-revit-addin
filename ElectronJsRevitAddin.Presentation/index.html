@@ -75,7 +75,7 @@
 
     <main class="d-flex flex-nowrap">
         <div class="d-flex flex-column flex-shrink-0 bg-light" style="width: 4.5rem;">
-            <a href="/" class="d-block p-3 link-dark text-decoration-none" title="Icon-only" data-bs-toggle="tooltip" data-bs-placement="right">
+            <a href="#" class="d-block p-3 link-dark text-decoration-none" title="Revit Tasks" data-bs-toggle="tooltip" data-bs-placement="right">
                 <img style="margin-left: -5px;" src="./assets/img/revit.png" alt="mdo" width="54" height="54" >
                 <span class="visually-hidden">Revit Tasks</span>
             </a>
@@ -155,9 +155,7 @@
 <script >
    
    $(document).ready(function () {
-
-        console.log("Init");
-
+  
         window.api.receive("upstream", (data) => {
                 console.log(data.length);
                 if(data.startsWith('toaster-msg')){
@@ -183,9 +181,7 @@
    });
 
 
-   function onBtnClick(args) {
-    console.log(args);
-
+   function onBtnClick(args) { 
         window.api.send("downstream", JSON.stringify({"endpoint": args, "payload" : JSON.stringify({ "command" : "deleteSelected" }) }));
    };
 

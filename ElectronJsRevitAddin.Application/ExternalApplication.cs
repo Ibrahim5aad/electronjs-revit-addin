@@ -1,4 +1,5 @@
 ﻿using Autodesk.Revit.UI;
+using ElectronJsRevitAddin.Controllers;
 using ElectronJsRevitAddin.ExternalCommands;
 using ElectronJsRevitAddin.Utils;
 
@@ -9,10 +10,9 @@ namespace ElectronJsRevitAddin
 
 		#region Fields
 
-		private readonly string _tabName = "Ibrahim Saad"; 
+		private readonly string _tabName = "Ibrahim Saad";
 
 		#endregion
-
 
 		#region Methods
 
@@ -23,7 +23,15 @@ namespace ElectronJsRevitAddin
 		/// <returns>Indicates if the external application completes its work successfully.</returns>
 		public Result OnShutdown(UIControlledApplication application)
 		{
-
+			try
+			{
+				MainCommand.UIProcess.CloseMainWindow();
+				MainCommand.UIProcess.Close();
+				ControllerBase.CloseServer();
+			}
+			catch (System.Exception)
+			{
+			}
 			return Result.Succeeded;
 		}
 

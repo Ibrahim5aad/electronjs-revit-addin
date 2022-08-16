@@ -3,7 +3,6 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using ElectronJsRevitAddin.Application.ExternalEvents;
 using ElectronJsRevitAddin.Application.Services;
-using ElectronJsRevitAddin.Application.Utils;
 using ElectronJsRevitAddin.Controllers;
 using System;
 using System.Diagnostics;
@@ -22,7 +21,16 @@ namespace ElectronJsRevitAddin.ExternalCommands
 		/// <value>
 		/// The main window handle.
 		/// </value>
-		public IntPtr MainWindowHandle { get; private set; }
+		public static IntPtr MainWindowHandle { get; private set; }
+
+
+		/// <summary>
+		/// Gets the UI process.
+		/// </summary>
+		/// <value>
+		/// The UI process.
+		/// </value>
+		public static Process UIProcess { get; set; }
 
 
 		/// <summary>
@@ -38,18 +46,22 @@ namespace ElectronJsRevitAddin.ExternalCommands
 		/// succeed, Revit will undo any changes made by the external command.</returns>
 		public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
 		{
-			ConfigureServices();
-			ControllerBase.InitServer();
-			DocumentManager.Instance.Init(commandData.Application);
-			ExternalExecutor.CreateExternalEvent();
+			if (UIProcess == null || UIProcess.HasExited)
+			{
+				ConfigureServices();
+				DocumentManager.Instance.Init(commandData.Application);
+				ExternalExecutor.CreateExternalEvent();
+				ControllerBase.InitServer();
 
-			var p = Process.Start(Path.GetDirectoryName(typeof(MainCommand).Assembly.Location) +
+				UIProcess = Process.Start(Path.GetDirectoryName(typeof(MainCommand).Assembly.Location) +
 					"/electronjsrevitaddin.presentation/electronjsrevitaddin.presentation.exe");
 
-			if (p.WaitForInputIdle(1000))
-			{
-				MainWindowHandle = p.MainWindowHandle;
-				WindowHandler.SetWindowOwner(commandData.Application, MainWindowHandle);
+				if (UIProcess.WaitForInputIdle(1000))
+				{
+					MainWindowHandle = UIProcess.MainWindowHandle;
+					//WindowHandler.SetWindowOwner(commandData.Application, MainWindowHandle);
+				}
+
 			}
 
 			return Result.Succeeded;

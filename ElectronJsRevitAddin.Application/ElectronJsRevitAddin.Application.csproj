@@ -135,6 +135,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\WindowController.cs" />
     <Compile Include="Controllers\Request.cs" />
     <Compile Include="ExternalCommands\CloseCommand.cs" />
     <Compile Include="ExternalEvents\Events\DeleteSelectedElements.cs" />

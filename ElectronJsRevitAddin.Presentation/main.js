@@ -10,8 +10,7 @@ let win;
 
 
 var client = net.connect(pipePath, connectionListener = function() 
-	{   
-        console.log(pipePath);
+	{
 		client.on('data', (data) => { 
             var strData = Utils.arrayBufferToString(data);
             win.webContents.send("upstream", strData.trim());
@@ -40,6 +39,21 @@ const createWindow = () => {
 app.whenReady().then(() => {
   createWindow()
 
+  win.on('close', function() {  
+    var request = new Schema.Request();
+    request.setEndpoint('Window/Close');
+    request.setPayload(JSON.stringify( { "isclose" : true }));
+    var data = Utils.arrayBufferToBase64(request.serializeBinary());
+    client.write(data);
+  });
+
+  // var handle = win.getNativeWindowHandle();
+  // var requestHandle = new Schema.Request();
+  // requestHandle.setEndpoint("Main/SetWindowOwner");
+  // requestHandle.setPayload(JSON.stringify({ "WindowHandle" : handle}));
+  // var data = Utils.arrayBufferToBase64(requestHandle.serializeBinary());
+  // client.write(data);
+
   app.on('activate', () => { 
     if (BrowserWindow.getAllWindows().length === 0) 
       createWindow()
@@ -54,18 +68,7 @@ ipcMain.on("downstream", (event, args) => {
         var data = Utils.arrayBufferToBase64(request.serializeBinary());
         client.write(data);
       
-  });
-  
-
-var handle = win.getNativeWindowHandle();
-
-
-var requestHandle = new Schema.Request();
-requestHandle.setEndpoint("Main/SetWindowOwner");
-requestHandle.setPayload(JSON.stringify({ "WindowHandle" : handle}));
-var data = Utils.arrayBufferToBase64(requestHandle.serializeBinary());
-client.write(data);
-
+  }); 
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit()
