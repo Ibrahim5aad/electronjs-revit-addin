@@ -25,6 +25,7 @@ const createWindow = () => {
     minHeight: 600,
     minWidth: 600,
     autoHideMenuBar: true,
+    alwaysOnTop: true,
     title: "Electron.js Revit UI",
     webPreferences: { 
         nodeIntegration: false, // is default value after Electron v5

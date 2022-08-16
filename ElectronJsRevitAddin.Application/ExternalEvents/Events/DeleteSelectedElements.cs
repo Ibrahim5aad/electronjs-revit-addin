@@ -15,9 +15,9 @@ namespace ElectronJsRevitAddin.Application.ExternalEvents
 			{
 				t.Start("Delete Selected Elements");
 
-				var elements = DocumentManager.Instance.CurrentUIDocument.Selection.GetElementIds();
+				DeleteElements = DocumentManager.Instance.CurrentUIDocument.Selection.GetElementIds();
 
-				DeleteElements = DocumentManager.Instance.CurrentDocument.Delete(elements);
+				DocumentManager.Instance.CurrentDocument.Delete(DeleteElements);
 
 				t.Commit();
 			}

@@ -7,6 +7,7 @@ using ElectronJsRevitAddin.Utils.Exceptions;
 using Newtonsoft.Json.Linq;
 using ProtoBuf;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -26,18 +27,27 @@ namespace ElectronJsRevitAddin.Controllers
 		static ControllerBase()
 		{
 		}
-		 
+
 
 		/// <summary>
 		/// Initializes the server.
 		/// </summary>
 		public static void InitServer()
 		{
-			_server = new PipeServer();
-			_server.OnConnect += OnServerConnect;
-			_server.OnDisconnect += OnServerOnDisconnect;
-			_server.MessageReceived += OnMessageReceived;
-			_server.OpenConnection();
+			if (_server != null)
+			{
+				_server.CloseConnection();
+				_server.OpenConnection();
+			}
+			else
+			{
+				_server = new PipeServer();
+				_server.OnConnect += OnServerConnect;
+				_server.OnDisconnect += OnServerOnDisconnect;
+				_server.MessageReceived += OnMessageReceived;
+				_server.OpenConnection();
+			}
+
 		}
 
 
@@ -64,7 +74,7 @@ namespace ElectronJsRevitAddin.Controllers
 		/// <param name="args">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private static void OnServerOnDisconnect(object sender, EventArgs args)
 		{
-
+			Debug.WriteLine("Disconnected");
 		}
 
 
@@ -75,7 +85,7 @@ namespace ElectronJsRevitAddin.Controllers
 		/// <param name="args">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private static void OnServerConnect(object sender, EventArgs args)
 		{
-
+			Debug.WriteLine("Connected");
 		}
 
 
